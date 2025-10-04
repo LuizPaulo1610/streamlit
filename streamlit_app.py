@@ -11,7 +11,9 @@ import plotly.express as px
 
 st.set_page_config(
     layout="wide",  # ativa layout amplo
-    page_title="Energia elétrica"
+    page_title="Dashboard de Energia",
+    page_icon="⚡",
+    initial_sidebar_state="expanded"
 )
 
 
