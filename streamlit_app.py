@@ -31,7 +31,7 @@ if json_path is not None:
         labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo': 'Consumo (kWh)'},
         markers=True,
         height=500,
-        width=1500
+        width=2500
     )
 
     st.plotly_chart(fig, use_container_width=True)
@@ -46,7 +46,7 @@ if json_path is not None:
         labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo_cumulativo': 'Consumo Cumulativo (kWh)'},
         markers=True,
         height=500,
-        width=1500
+        width=2500
     )
 
     st.plotly_chart(fig2, use_container_width=True)
@@ -82,7 +82,7 @@ if json_path is not None:
         labels={'dataReferenciaConsumo': 'Data/Hora', 'demanda': 'Demanda (kW)'},
         markers=True,
         height=500,
-        width=1500
+        width=2500
     )
 
     st.plotly_chart(fig3, use_container_width=True)
