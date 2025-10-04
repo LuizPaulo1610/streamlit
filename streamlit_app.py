@@ -22,137 +22,155 @@ st.set_page_config(
         "About": "### ⚡ Dashboard de Energia\nDesenvolvido por Luiz Paulo Nascimento."
     }
 )
-# ---------------------------------------------------------------------------------------------------------------
+
 # "Banco" de usuários simples
 usuarios = {
     "luiz": {"senha": "1234"},
     "victor": {"senha": "abcd"},
 }
 
-st.title("🔐 Login")
-
-usuario = st.text_input("Usuário")
-senha = st.text_input("Senha", type="password")
-
-if st.button("Entrar"):
-    if usuario in usuarios and usuarios[usuario]["senha"] == senha:
-        st.success(f"Bem-vindo, {usuario}!")
-        # aqui você poderia ler e exibir o dataset correspondente
-    else:
-        st.error("Usuário ou senha incorretos.")
-
 # ---------------------------------------------------------------------------------------------------------------
-st.title("Consumo de Energia ao Longo do Tempo")
+# Inicializa a variável de tela, se não existir
+if "tela" not in st.session_state:
+    st.session_state.tela = "login"
+
+# Função para mudar de tela
+def mudar_tela(nova_tela):
+    st.session_state.tela = nova_tela
+
+# Tela de login
+if st.session_state.tela == "login":
+    st.title("🔐 Login")
+
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+
+    if st.button("Entrar"):
+        if usuario == "luiz" and senha == "1234":
+            st.session_state.usuario = usuario
+            mudar_tela("dashboard")
+        else:
+            st.error("Usuário ou senha incorretos.")
+
+# Tela principal (dashboard)
+elif st.session_state.tela == "dashboard":
+    st.title(f"Bem-vindo, {st.session_state.usuario} ⚡")
+    
+    if st.button("Sair"):
+        mudar_tela("login")
+
+    # ---------------------------------------------------------------------------------------------------------------
+    st.title("Consumo de Energia ao Longo do Tempo")
 
 
-# # Upload do arquivo JSON
-# uploaded_file = st.file_uploader("Escolha o arquivo JSON", type="json")
-# Carregar JSON diretamente do repositório
-json_path = "medicao.json"
+    # # Upload do arquivo JSON
+    # uploaded_file = st.file_uploader("Escolha o arquivo JSON", type="json")
+    # Carregar JSON diretamente do repositório
+    json_path = "medicao.json"
 
 
-with open(json_path, 'r', encoding='utf-8') as file:
-    medicao = json.load(file)
+    with open(json_path, 'r', encoding='utf-8') as file:
+        medicao = json.load(file)
 
-df_med = pd.DataFrame(medicao)
+    df_med = pd.DataFrame(medicao)
 
-# Gráfico interativo
-fig = px.line(
-    df_med,
-    x='dataReferenciaConsumo',
-    y='consumo',
-    title="Consumo de Energia ao Longo do Tempo",
-    labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo': 'Consumo (kWh)'},
-    markers=True,
+    # Gráfico interativo
+    fig = px.line(
+        df_med,
+        x='dataReferenciaConsumo',
+        y='consumo',
+        title="Consumo de Energia ao Longo do Tempo",
+        labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo': 'Consumo (kWh)'},
+        markers=True,
 
-)
-
-fig.update_layout(width=3000, height=800)
-# st.plotly_chart(fig)
-# -------------------------------------------------------------------------------------------------------------
-# Segundo gráfico: exemplo de consumo cumulativo
-df_med['consumo_cumulativo'] = df_med['consumo'].cumsum()
-fig2 = px.line(
-    df_med,
-    x='dataReferenciaConsumo',
-    y='consumo_cumulativo',
-    title="Consumo Cumulativo de Energia",
-    labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo_cumulativo': 'Consumo Cumulativo (kWh)'},
-    markers=True,
-    height=500,
-    width=2500
-)
-
-fig2.update_layout(width=3000, height=800)
-# st.plotly_chart(fig2)
-# ----------------------------------------------------------------------------------------------------------
-df_filtered = df_med[['dataReferenciaConsumo', 'consumo']] 
-
-arr = df_filtered['consumo'].to_numpy()
-
-# soma de janelas de tamanho 3 - média móvel de 15min
-somas = np.convolve(arr, np.ones(3, dtype=int), 'valid')
-
-max_val = somas.max()
-idx_max = somas.argmax()
-
-demandas = list()
-for idx, consumo in enumerate(somas):
-    demandas.append(
-        {
-            "dataReferenciaConsumo": df_filtered.loc[idx+2,'dataReferenciaConsumo'],
-            "consumo": consumo
-        }
     )
 
-df_demanda = pd.DataFrame(demandas)
-df_demanda['demanda'] = round(4*df_demanda['consumo'], 3)
+    fig.update_layout(width=3000, height=800)
+    # st.plotly_chart(fig)
+    # -------------------------------------------------------------------------------------------------------------
+    # Segundo gráfico: exemplo de consumo cumulativo
+    df_med['consumo_cumulativo'] = df_med['consumo'].cumsum()
+    fig2 = px.line(
+        df_med,
+        x='dataReferenciaConsumo',
+        y='consumo_cumulativo',
+        title="Consumo Cumulativo de Energia",
+        labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo_cumulativo': 'Consumo Cumulativo (kWh)'},
+        markers=True,
+        height=500,
+        width=2500
+    )
 
-# Terceiro gráfico: Demandas
-fig3 = px.line(
-    df_demanda,
-    x='dataReferenciaConsumo',
-    y='demanda',
-    title="Demanda Medida ao Longo do Tempo",
-    labels={'dataReferenciaConsumo': 'Data/Hora', 'demanda': 'Demanda (kW)'},
-    markers=True,
-    height=500,
-    width=2500
-)
-fig3.update_layout(width=3000, height=800)
-# st.plotly_chart(fig3)
-# ----------------------------------------------------------------------------------------------------------
-# Criando histograma de consumo
-fig4 = px.histogram(
-    df_med,
-    x="consumo",
-    title="Distribuição do Consumo",
-)
-fig4.update_layout(width=3000, height=800)
+    fig2.update_layout(width=3000, height=800)
+    # st.plotly_chart(fig2)
+    # ----------------------------------------------------------------------------------------------------------
+    df_filtered = df_med[['dataReferenciaConsumo', 'consumo']] 
 
-# ----------------------------------------------------------------------------------------------------------
-# Criando histograma de demanda
-fig5 = px.histogram(
-    df_demanda,
-    x="demanda",
-    title="Distribuição de demanda",
-)
-fig5.update_layout(width=3000, height=800)
-# ====================================================================================
-"""
-Usando tabs: Definimos a plotagem por tabs posteriormente.
+    arr = df_filtered['consumo'].to_numpy()
 
-Para nossa versão basta mudar a plotagem
-"""
+    # soma de janelas de tamanho 3 - média móvel de 15min
+    somas = np.convolve(arr, np.ones(3, dtype=int), 'valid')
 
-# Criar abas
-tab1, tab2 = st.tabs(["📈 Gráficos de Linha", "📊 Histogramas"])
+    max_val = somas.max()
+    idx_max = somas.argmax()
 
-with tab1:
-    st.plotly_chart(fig)
-    st.plotly_chart(fig2)
-    st.plotly_chart(fig3)
+    demandas = list()
+    for idx, consumo in enumerate(somas):
+        demandas.append(
+            {
+                "dataReferenciaConsumo": df_filtered.loc[idx+2,'dataReferenciaConsumo'],
+                "consumo": consumo
+            }
+        )
 
-with tab2:
-    st.plotly_chart(fig4)
-    st.plotly_chart(fig5)
+    df_demanda = pd.DataFrame(demandas)
+    df_demanda['demanda'] = round(4*df_demanda['consumo'], 3)
+
+    # Terceiro gráfico: Demandas
+    fig3 = px.line(
+        df_demanda,
+        x='dataReferenciaConsumo',
+        y='demanda',
+        title="Demanda Medida ao Longo do Tempo",
+        labels={'dataReferenciaConsumo': 'Data/Hora', 'demanda': 'Demanda (kW)'},
+        markers=True,
+        height=500,
+        width=2500
+    )
+    fig3.update_layout(width=3000, height=800)
+    # st.plotly_chart(fig3)
+    # ----------------------------------------------------------------------------------------------------------
+    # Criando histograma de consumo
+    fig4 = px.histogram(
+        df_med,
+        x="consumo",
+        title="Distribuição do Consumo",
+    )
+    fig4.update_layout(width=3000, height=800)
+
+    # ----------------------------------------------------------------------------------------------------------
+    # Criando histograma de demanda
+    fig5 = px.histogram(
+        df_demanda,
+        x="demanda",
+        title="Distribuição de demanda",
+    )
+    fig5.update_layout(width=3000, height=800)
+    # ====================================================================================
+    """
+    Usando tabs: Definimos a plotagem por tabs posteriormente.
+
+    Para nossa versão basta mudar a plotagem
+    """
+
+    # Criar abas
+    tab1, tab2 = st.tabs(["📈 Gráficos de Linha", "📊 Histogramas"])
+
+    with tab1:
+        st.plotly_chart(fig)
+        st.plotly_chart(fig2)
+        st.plotly_chart(fig3)
+
+    with tab2:
+        st.plotly_chart(fig4)
+        st.plotly_chart(fig5)
