@@ -33,8 +33,8 @@ if json_path is not None:
     
     )
 
-    fig.update_layout(height=700)
-    st.plotly_chart(fig, use_container_width=True)
+    fig.update_layout(width=2000, height=700)
+    st.plotly_chart(fig)
 
     # Segundo gráfico: exemplo de consumo cumulativo
     df_med['consumo_cumulativo'] = df_med['consumo'].cumsum()
