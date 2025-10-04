@@ -5,6 +5,7 @@
 
 import streamlit as st
 import pandas as pd
+import numpy as np
 import json
 import plotly.express as px
 
@@ -46,3 +47,38 @@ if json_path is not None:
     )
 
     st.plotly_chart(fig2, use_container_width=True)
+    # ----------------------------------------------------------------------------------------------------------
+    df_filtered = df_med[['dataReferenciaConsumo', 'consumo']] 
+
+    arr = df_filtered['consumo'].to_numpy()
+
+    # soma de janelas de tamanho 3 - média móvel de 15min
+    somas = np.convolve(arr, np.ones(3, dtype=int), 'valid')
+
+    max_val = somas.max()
+    idx_max = somas.argmax()
+
+    demandas = list()
+    for idx, consumo in enumerate(somas):
+        demandas.append(
+            {
+                "dataReferenciaConsumo": df_filtered.loc[idx+2,'dataReferenciaConsumo'],
+                "consumo": consumo
+            }
+        )
+
+    df_demanda = pd.DataFrame(demandas)
+    df_demanda['demanda'] = round(4*df_demanda['consumo'], 3)
+
+    # Terceiro gráfico: Demandas
+    fig3 = px.line(
+        df_demanda,
+        x='dataReferenciaConsumo',
+        y='demanda',
+        title="Demanda Medida ao Longo do Tempo",
+        labels={'dataReferenciaConsumo': 'Data/Hora', 'demanda': 'Demanda (kW)'},
+        markers=True,
+        height=500
+    )
+
+    st.plotly_chart(fig3, use_container_width=True)
