@@ -39,7 +39,7 @@ if json_path is not None:
     
     )
 
-    fig.update_layout(width=3000, height=700)
+    fig.update_layout(width=3000, height=800)
     st.plotly_chart(fig)
 
     # Segundo gráfico: exemplo de consumo cumulativo
@@ -55,7 +55,8 @@ if json_path is not None:
         width=2500
     )
 
-    st.plotly_chart(fig2, use_container_width=True)
+    fig2.update_layout(width=3000, height=800)
+    st.plotly_chart(fig2)
     # ----------------------------------------------------------------------------------------------------------
     df_filtered = df_med[['dataReferenciaConsumo', 'consumo']] 
 
@@ -90,5 +91,5 @@ if json_path is not None:
         height=500,
         width=2500
     )
-
-    st.plotly_chart(fig3, use_container_width=True)
+    fig3.update_layout(width=3000, height=800)
+    st.plotly_chart(fig3)
