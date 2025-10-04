@@ -26,7 +26,7 @@ st.set_page_config(
 # "Banco" de usuários simples
 usuarios = {
     "luiz": {"senha": "1234"},
-    "victor": {"senha": "abcd"},
+    "novo": {"senha": "abcd"},
 }
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -40,6 +40,7 @@ def mudar_tela(nova_tela):
 
 # Tela de login
 if st.session_state.tela == "login":
+    st.set_page_config(layout="centered")
     st.title("🔐 Login")
 
     usuario = st.text_input("Usuário")
@@ -54,6 +55,8 @@ if st.session_state.tela == "login":
 
 # Tela principal (dashboard)
 elif st.session_state.tela == "dashboard":
+    st.set_page_config(layout="wide")
+
     st.title(f"Bem-vindo, {st.session_state.usuario} ⚡")
     
     if st.button("Sair"):
