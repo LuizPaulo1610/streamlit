@@ -13,10 +13,7 @@ st.set_page_config(
     layout="centered",  # ativa layout amplo
     page_title="Dashboard de Energia",
     page_icon="⚡",
-    initial_sidebar_state="expanded"
-)
-
-st.set_page_config(
+    initial_sidebar_state="expanded",
     menu_items={
         "Get Help": "https://github.com/LuizPaulo1610",
         "About": "### ⚡ Dashboard de Energia\nDesenvolvido por Luiz Paulo Nascimento."
