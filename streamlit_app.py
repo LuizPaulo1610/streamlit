@@ -33,4 +33,16 @@ if json_path is not None:
 
     st.plotly_chart(fig, use_container_width=True)
 
-    st.plotly_chart(fig, use_container_width=True)
+    # Segundo gráfico: exemplo de consumo cumulativo
+    df_med['consumo_cumulativo'] = df_med['consumo'].cumsum()
+    fig2 = px.line(
+        df_med,
+        x='dataReferenciaConsumo',
+        y='consumo_cumulativo',
+        title="Consumo Cumulativo de Energia",
+        labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo_cumulativo': 'Consumo Cumulativo (kWh)'},
+        markers=True,
+        height=500
+    )
+
+    st.plotly_chart(fig2, use_container_width=True)
