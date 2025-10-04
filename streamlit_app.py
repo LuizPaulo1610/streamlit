@@ -30,10 +30,10 @@ if json_path is not None:
         title="Consumo de Energia ao Longo do Tempo",
         labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo': 'Consumo (kWh)'},
         markers=True,
-        height=500,
-        width=2500
+    
     )
 
+    fig.update_layout(height=700)
     st.plotly_chart(fig, use_container_width=True)
 
     # Segundo gráfico: exemplo de consumo cumulativo
