@@ -16,7 +16,32 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+st.set_page_config(
+    menu_items={
+        "Get Help": "https://github.com/LuizPaulo1610",
+        "About": "### ⚡ Dashboard de Energia\nDesenvolvido por Luiz Paulo Nascimento."
+    }
+)
+# ---------------------------------------------------------------------------------------------------------------
+# "Banco" de usuários simples
+usuarios = {
+    "luiz": {"senha": "1234"},
+    "victor": {"senha": "abcd"},
+}
 
+st.title("🔐 Login")
+
+usuario = st.text_input("Usuário")
+senha = st.text_input("Senha", type="password")
+
+if st.button("Entrar"):
+    if usuario in usuarios and usuarios[usuario]["senha"] == senha:
+        st.success(f"Bem-vindo, {usuario}!")
+        # aqui você poderia ler e exibir o dataset correspondente
+    else:
+        st.error("Usuário ou senha incorretos.")
+
+# ---------------------------------------------------------------------------------------------------------------
 st.title("Consumo de Energia ao Longo do Tempo")
 
 
