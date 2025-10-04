@@ -29,7 +29,8 @@ if json_path is not None:
         y='consumo',
         title="Consumo de Energia ao Longo do Tempo",
         labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo': 'Consumo (kWh)'},
-        markers=True
+        markers=True,
+        height=1000
     )
 
     st.plotly_chart(fig, use_container_width=True)
@@ -43,7 +44,7 @@ if json_path is not None:
         title="Consumo Cumulativo de Energia",
         labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo_cumulativo': 'Consumo Cumulativo (kWh)'},
         markers=True,
-        height=500
+        height=1000
     )
 
     st.plotly_chart(fig2, use_container_width=True)
@@ -78,7 +79,7 @@ if json_path is not None:
         title="Demanda Medida ao Longo do Tempo",
         labels={'dataReferenciaConsumo': 'Data/Hora', 'demanda': 'Demanda (kW)'},
         markers=True,
-        height=500
+        height=1000
     )
 
     st.plotly_chart(fig3, use_container_width=True)
