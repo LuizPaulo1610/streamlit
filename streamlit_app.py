@@ -102,6 +102,15 @@ fig4 = px.histogram(
     title="Distribuição do Consumo",
 )
 fig4.update_layout(width=3000, height=800)
+
+# ----------------------------------------------------------------------------------------------------------
+# Criando histograma de demanda
+fig5 = px.histogram(
+    df_demanda,
+    x="demanda",
+    title="Distribuição de demanda",
+)
+fig5.update_layout(width=3000, height=800)
 # ====================================================================================
 """
 Usando tabs: Definimos a plotagem por tabs posteriormente.
@@ -119,3 +128,4 @@ with tab1:
 
 with tab2:
     st.plotly_chart(fig4)
+    st.plotly_chart(fig5)
