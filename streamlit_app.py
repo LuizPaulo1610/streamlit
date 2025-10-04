@@ -9,7 +9,13 @@ import numpy as np
 import json
 import plotly.express as px
 
+st.set_page_config(
+    layout="wide",  # ativa layout amplo
+    page_title="Meu Gráfico"
+)
+
 st.title("Consumo de Energia ao Longo do Tempo")
+
 
 # # Upload do arquivo JSON
 # uploaded_file = st.file_uploader("Escolha o arquivo JSON", type="json")
