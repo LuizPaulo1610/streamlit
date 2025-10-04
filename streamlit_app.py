@@ -18,7 +18,7 @@ json_path = "medicao.json"
 if json_path is not None:
     with open(json_path, 'r', encoding='utf-8') as file:
         medicao = json.load(file)
-        
+
     df_med = pd.DataFrame(medicao)
 
     # Gráfico interativo
@@ -30,5 +30,7 @@ if json_path is not None:
         labels={'dataReferenciaConsumo': 'Data/Hora', 'consumo': 'Consumo (kWh)'},
         markers=True
     )
+
+    st.plotly_chart(fig, use_container_width=True)
 
     st.plotly_chart(fig, use_container_width=True)
