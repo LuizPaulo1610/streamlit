@@ -33,7 +33,7 @@ if json_path is not None:
     
     )
 
-    fig.update_layout(width=2000, height=700)
+    fig.update_layout(width=3000, height=700)
     st.plotly_chart(fig)
 
     # Segundo gráfico: exemplo de consumo cumulativo
