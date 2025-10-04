@@ -10,10 +10,15 @@ import plotly.express as px
 
 st.title("Consumo de Energia ao Longo do Tempo")
 
-# Upload do arquivo JSON
-uploaded_file = st.file_uploader("Escolha o arquivo JSON", type="json")
-if uploaded_file is not None:
-    medicao = json.load(uploaded_file)
+# # Upload do arquivo JSON
+# uploaded_file = st.file_uploader("Escolha o arquivo JSON", type="json")
+# Carregar JSON diretamente do repositório
+json_path = "medicao.json"
+
+if json_path is not None:
+    with open(json_path, 'r', encoding='utf-8') as file:
+        medicao = json.load(file)
+        
     df_med = pd.DataFrame(medicao)
 
     # Gráfico interativo
